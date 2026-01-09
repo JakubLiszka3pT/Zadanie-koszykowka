@@ -11,13 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.koszykowka.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
-    private int punkty = 0;
-
+    private PunktyViewModel punktyViewModel;
     private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,37 +25,28 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        if(savedInstanceState != null){
-            punkty = savedInstanceState.getInt("Punkty");
-        }
-        binding.textview.setText(String.valueOf(punkty));
+        punktyViewModel = new ViewModelProvider(this).get(PunktyViewModel.class);
+        binding.textview.setText(String.valueOf(punktyViewModel.getPunkty()));
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                punkty++;
-                binding.textview.setText(String.valueOf(punkty));
+                punktyViewModel.addPunkty(1);
+                binding.textview.setText(String.valueOf(punktyViewModel.getPunkty()));
             }
         });
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                punkty+=2;
-                binding.textview.setText(String.valueOf(punkty));
+                punktyViewModel.addPunkty(2);
+                binding.textview.setText(String.valueOf(punktyViewModel.getPunkty()));
             }
         });
         binding.button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                punkty+=3;
-                binding.textview.setText(String.valueOf(punkty));
+                punktyViewModel.addPunkty(3);
+                binding.textview.setText(String.valueOf(punktyViewModel.getPunkty()));
             }
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("Punkty", punkty);
     }
 }
